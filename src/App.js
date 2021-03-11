@@ -1,48 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { Button } from '@material-ui/core';
-import { getUsers } from './api';
-import { useState } from 'react';
-import Dashboard from './components/Dashboard';
-import Register from './pages/Register';
-import Preferences from './components/Preferences';
-import Login from './pages/Login';
-
-
-// function setToken(userToken) {
-//   sessionStorage.setItem('token', userToken);
-// }
-
-// function getToken() {
-//   const tokenString = sessionStorage.getItem('token');
-//   return tokenString;
-// }
+import logo from "./logo.svg";
+import "./App.css";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { Button } from "@material-ui/core";
+import { getUsers } from "./api";
+import React, { useState } from "react";
+import Dashboard from "./components/Dashboard";
+import Register from "./pages/Register";
+import Preferences from "./components/Preferences";
+import Login from "./pages/Login";
+import Home from "./pages/Home";
+import NotFound from "pages/PageNotFound";
+import PrivateRoute from "components/PrivateRoute";
+import Header from "components/Header";
 
 function App() {
   return (
-    <div className="wrapper">
-      
-      <h1>Application</h1>
-      {/* <BrowserRouter>
+    <React.StrictMode>
+      <BrowserRouter>
+        <Header />
         <Switch>
-          <Route path="/dashboard">
-            <Dashboard />
-          </Route>
-
-          <Route path="/preferences">
-            <Preferences />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/register" component={Register} />
+          <Route exact path="/" component={Home} />
+          <PrivateRoute exact path="/dashboard" component={Dashboard} />
+          <Route>
+            <NotFound />
           </Route>
         </Switch>
-      </BrowserRouter> */}
-    </div>
-  )
-};
-
+      </BrowserRouter>
+    </React.StrictMode>
+  );
+}
 
 // function App() {
 //   const [users, setUsers] = useState([]);
-  
+
 //   const loadUsers = () => {
 //     let d = [];
 //     const test = getUsers().then(data => {
@@ -68,7 +60,7 @@ function App() {
 //   return (
 //     <div className="App">
 //       <header className="App-header">
-      
+
 //         <img src={logo} className="App-logo" alt="logo" />
 //         <a
 //           className="App-link"
