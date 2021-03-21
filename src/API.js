@@ -1,5 +1,4 @@
-import axios, { AxiosResponse } from 'axios';
-
+import axios, { AxiosResponse } from "axios";
 
 // axios.defaults.headers.common = {
 //   "Content-Type": "application/json"
@@ -25,11 +24,12 @@ import axios, { AxiosResponse } from 'axios';
 //axios.defaults.baseURL = 'http://localhost:5555';
 
 const API = axios.create({
-  baseURL: 'https://meu-assistente.herokuapp.com/',
-  responseType: 'json',
+  baseURL: "https://meu-assistente.herokuapp.com/",
+  responseType: "json",
   headers: {
-    'Content-Type': 'application/json'
-  }
+    "Content-Type": "application/json",
+  },
+  timeout: 5000,
 });
 
-export default API; 
+export default API;

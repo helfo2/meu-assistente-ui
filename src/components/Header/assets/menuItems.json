@@ -1,0 +1,39 @@
+{
+  "items": [
+    {
+      "key": "dashboard",
+      "title": "Painel",
+      "link": "/dashboard"
+    },
+    {
+      "key": "contacts",
+      "title": "Contatos",
+      "link": "/contacts"
+    },
+    {
+      "key": "solicitations",
+      "title": "Solicitações",
+      "link": "/solicitations"
+    },
+    {
+      "key": "alerts",
+      "title": "Alertas",
+      "link": "/alerts"
+    },
+    {
+      "key": "tags",
+      "title": "Etiquetas",
+      "link": "/tags"
+    },
+    {
+      "key": "users",
+      "title": "Usuários",
+      "link": "/users"
+    },
+    {
+      "key": "leave",
+      "title": "Sair",
+      "link": "/logout"
+    }
+  ]
+}

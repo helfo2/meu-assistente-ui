@@ -1,5 +1,7 @@
+import jwtDecode from "jwt-decode";
+
 import EventSystem from "helpers/EventSystem";
-import API from "../api";
+import API from "../API";
 
 const BASE_ADDR = "auth";
 
@@ -10,7 +12,7 @@ class AuthService {
       password,
     }).then((res) => {
       if (res.data) {
-        localStorage.setItem("user", JSON.stringify(res.data));
+        localStorage.setItem("accessToken", JSON.stringify(res.data));
 
         EventSystem.publish("USER_LOGIN");
       }
@@ -20,7 +22,7 @@ class AuthService {
   }
 
   logout() {
-    localStorage.removeItem("user");
+    localStorage.removeItem("accessToken");
 
     EventSystem.publish("USER_LOGOUT");
   }
@@ -35,8 +37,39 @@ class AuthService {
     });
   }
 
+  async changePassword(oldPassword, newPassword) {
+    const tryLogin = await this.login(
+      jwtDecode(this.getCurrentUser()).username,
+      oldPassword
+    );
+
+    if (tryLogin) {
+      return API.post(
+        BASE_ADDR + "/change-password",
+        {
+          oldPassword,
+          newPassword,
+        },
+        { headers: { Authorization: `Bearer ${this.getCurrentUser()}` } }
+      ).then((res) => {
+        return res.status === 204;
+      });
+    } else {
+      return { message: "Senha atual inválida" };
+    }
+  }
+
   getCurrentUser() {
-    return JSON.parse(localStorage.getItem("user"));
+    return JSON.parse(localStorage.getItem("accessToken"));
+  }
+
+  getCurrentUserName() {
+    const username = jwtDecode(this.getCurrentUser()).username;
+    const firstLetter = username[0];
+    let name = username.substring(0, username.indexOf("@"));
+    const lastLetter = name[name.length - 1];
+
+    return (firstLetter + lastLetter).toUpperCase();
   }
 }
 

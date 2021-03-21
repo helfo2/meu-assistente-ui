@@ -1,33 +1,29 @@
-import logo from "./logo.svg";
 import "./App.css";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
-import { Button } from "@material-ui/core";
-import { getUsers } from "./api";
-import React, { useState } from "react";
-import Dashboard from "./components/Dashboard";
-import Register from "./pages/Register";
-import Preferences from "./components/Preferences";
-import Login from "./pages/Login";
-import Home from "./pages/Home";
-import NotFound from "pages/PageNotFound";
-import PrivateRoute from "components/PrivateRoute";
-import Header from "components/Header";
+import React from "react";
+import MainContainer from "components/MainContainer";
+import { createMuiTheme, CssBaseline, ThemeProvider } from "@material-ui/core";
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: "#274472",
+    },
+    secondary: {
+      main: "#C3E0E5",
+    },
+    background: {
+      default: "#D4F1F4",
+    },
+  },
+});
 
 function App() {
   return (
     <React.StrictMode>
-      <BrowserRouter>
-        <Header />
-        <Switch>
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/register" component={Register} />
-          <Route exact path="/" component={Home} />
-          <PrivateRoute exact path="/dashboard" component={Dashboard} />
-          <Route>
-            <NotFound />
-          </Route>
-        </Switch>
-      </BrowserRouter>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <MainContainer />
+      </ThemeProvider>
     </React.StrictMode>
   );
 }

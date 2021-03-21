@@ -12,7 +12,7 @@ import Container from "@material-ui/core/Container";
 import { useHistory } from "react-router";
 import { useState } from "react";
 import AuthService from "../services/auth-service";
-import Toast from "components/global/toast.component";
+import Toast from "components/global/Toast";
 import { CircularProgress, List, ListItem } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -138,12 +138,10 @@ export default function Register() {
     e.preventDefault();
 
     if (
-      !(
-        firstNameErrorText === "" &&
-        emailErrorText === "" &&
-        passwordError === true &&
-        confirmPasswordErrorText === ""
-      )
+      firstNameErrorText === "" &&
+      emailErrorText === "" &&
+      passwordError === false &&
+      confirmPasswordErrorText === ""
     ) {
       return;
     }
@@ -174,109 +172,119 @@ export default function Register() {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Grid
+      container
+      spacing={0}
+      direction="column"
+      alignItems="center"
+      justify="center"
+      style={{ minHeight: "90vh" }}
+    >
       <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Cadastre-se
-        </Typography>
-        <form className={classes.form} onSubmit={handleRegister}>
-          <Grid container spacing={2}>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="firstName"
-              label="Nome"
-              name="firstName"
-              value={firstName}
-              autoFocus
-              onChange={onChangeFirstName}
-              error={firstNameErrorText !== ""}
-              helperText={firstNameErrorText}
-            />
+      <Grid item xs={3}>
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Cadastre-se
+          </Typography>
+          <form className={classes.form} onSubmit={handleRegister}>
+            <Grid container spacing={2}>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="firstName"
+                label="Nome"
+                name="firstName"
+                value={firstName}
+                autoFocus
+                onChange={onChangeFirstName}
+                error={firstNameErrorText !== ""}
+                helperText={firstNameErrorText}
+              />
 
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Endereço de e-mail"
-              name="email"
-              value={email}
-              autoComplete="email"
-              onChange={onChangeEmail}
-              error={emailErrorText !== ""}
-              helperText={emailErrorText}
-            />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Endereço de e-mail"
+                name="email"
+                value={email}
+                autoComplete="email"
+                onChange={onChangeEmail}
+                error={emailErrorText !== ""}
+                helperText={emailErrorText}
+              />
 
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              type="password"
-              id="password"
-              label="Senha"
-              name="password"
-              value={password}
-              autoComplete="password"
-              onChange={onChangePassword}
-              error={passwordError}
-            />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                type="password"
+                id="password"
+                label="Senha"
+                name="password"
+                value={password}
+                autoComplete="password"
+                onChange={onChangePassword}
+                error={passwordError}
+              />
 
-            {passwordError ? passwordErrorInfo() : null}
+              {passwordError ? passwordErrorInfo() : null}
 
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              type="password"
-              id="confirmPassword"
-              label="Confirme a senha"
-              name="confirmPassword"
-              value={confirmPassword}
-              autoComplete="confirmPassword"
-              onChange={onChangeConfirmPassword}
-              error={confirmPasswordErrorText !== ""}
-              helperText={confirmPasswordErrorText}
-            />
-          </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            disabled={loading}
-          >
-            {loading && (
-              <CircularProgress
-                style={{
-                  marginRight: 20,
-                }}
-              ></CircularProgress>
-            )}
-            Cadastrar
-          </Button>
-
-          {message && <Toast isOpen={true} type="error" message={message} />}
-
-          <Grid container justify="flex-end">
-            <Grid item>
-              <Link href="/login" variant="body2">
-                Já tem uma conta? Entre
-              </Link>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                type="password"
+                id="confirmPassword"
+                label="Confirme a senha"
+                name="confirmPassword"
+                value={confirmPassword}
+                autoComplete="confirmPassword"
+                onChange={onChangeConfirmPassword}
+                error={confirmPasswordErrorText !== ""}
+                helperText={confirmPasswordErrorText}
+              />
             </Grid>
-          </Grid>
-        </form>
-      </div>
-    </Container>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              disabled={loading}
+            >
+              {loading ? (
+                <CircularProgress
+                  style={{
+                    marginRight: 20,
+                  }}
+                ></CircularProgress>
+              ) : (
+                <span>Cadastrar</span>
+              )}
+            </Button>
+
+            {message && <Toast isOpen={true} type="error" message={message} />}
+
+            <Grid container justify="flex-end">
+              <Grid item>
+                <Link href="/login" variant="body2">
+                  Já tem uma conta? Entre
+                </Link>
+              </Grid>
+            </Grid>
+          </form>
+        </div>
+      </Grid>
+    </Grid>
   );
 }
