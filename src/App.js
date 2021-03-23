@@ -6,10 +6,10 @@ import { createMuiTheme, CssBaseline, ThemeProvider } from "@material-ui/core";
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: "#274472",
+      main: "#05445E",
     },
     secondary: {
-      main: "#C3E0E5",
+      main: "#D8A7B1",
     },
     background: {
       default: "#D4F1F4",
@@ -19,12 +19,10 @@ const theme = createMuiTheme({
 
 function App() {
   return (
-    <React.StrictMode>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <MainContainer />
-      </ThemeProvider>
-    </React.StrictMode>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <MainContainer />
+    </ThemeProvider>
   );
 }
 

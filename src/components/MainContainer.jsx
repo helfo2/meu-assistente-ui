@@ -7,8 +7,6 @@ import NotFound from "pages/PageNotFound";
 import authService from "services/auth-service";
 import ChangePassword from "pages/ChangePassword";
 import Tags from "pages/Tags";
-import PageHeader from "components/PageHeader";
-import AdbIcon from "@material-ui/icons/Adb";
 import { makeStyles } from "@material-ui/core";
 
 function requireAuth(nextState, replace, next) {
@@ -23,8 +21,7 @@ function requireAuth(nextState, replace, next) {
 
 const useStyles = makeStyles((theme) => ({
   appMain: {
-    flexGrow: 1,
-    padding: 0,
+    marginLeft: theme.spacing(7) + 1,
   },
 }));
 
@@ -35,11 +32,6 @@ const MainContainer = () => {
     <BrowserRouter>
       <Header />
       <div className={classes.appMain}>
-        <PageHeader
-          title="Page Header Title"
-          subtitle="Page Header description"
-          icon={<AdbIcon fontSize="large" />}
-        />
         <Switch>
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />

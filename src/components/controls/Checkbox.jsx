@@ -1,0 +1,34 @@
+import {
+  FormControl,
+  Checkbox as MuiCheckbox,
+  FormControlLabel,
+} from "@material-ui/core";
+
+export default function Checkbox(props) {
+  const { name, label, value, onChange } = props;
+
+  const convertToDefaultEvent = (name, value) => ({
+    target: {
+      name,
+      value,
+    },
+  });
+
+  return (
+    <FormControl>
+      <FormControlLabel
+        control={
+          <MuiCheckbox
+            name={name}
+            color="primary"
+            checked={value}
+            onChange={(e) =>
+              onChange(convertToDefaultEvent(name, e.target.checked))
+            }
+          />
+        }
+        label={label}
+      />
+    </FormControl>
+  );
+}
