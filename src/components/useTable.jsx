@@ -57,7 +57,7 @@ export default function useTable(records, headCells, filterFn) {
   };
 
   const getComparator = (order, orderBy) => {
-    return order === "asc"
+    return order === "desc"
       ? (a, b) => descendingComparator(a, b, orderBy)
       : (a, b) => -descendingComparator(a, b, orderBy);
   };

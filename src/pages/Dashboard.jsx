@@ -1,5 +1,4 @@
 import {
-  Grid,
   InputAdornment,
   makeStyles,
   Paper,
@@ -8,21 +7,22 @@ import {
   TableRow,
   Toolbar,
 } from "@material-ui/core";
-import Toast from "components/global/Toast";
+import { Search } from "@material-ui/icons";
+import AdbIcon from "@material-ui/icons/Adb";
+import AddIcon from "@material-ui/icons/Add";
+import CloseIcon from "@material-ui/icons/Close";
+import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
+import Notification from "components/Notification";
 import PageHeader from "components/PageHeader";
 import React, { useState } from "react";
 import { useLocation } from "react-router";
-import AdbIcon from "@material-ui/icons/Adb";
-import EmployeeForm from "./EmployeeForm";
-import useTable from "../components/useTable";
-import Popup from "../components/Popup";
+import ConfirmDialog from "../components/ConfirmDialog";
 import Controls from "../components/controls/Controls";
-import { Search } from "@material-ui/icons";
-import AddIcon from "@material-ui/icons/Add";
-import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
-import CloseIcon from "@material-ui/icons/Close";
+import Popup from "../components/Popup";
+import useTable from "../components/useTable";
+import EmployeeForm from "./EmployeeForm";
 
-const employees = [
+let employees = [
   {
     id: 0,
     fullName: "Amanco",
@@ -134,6 +134,16 @@ export default function Dashboard() {
   const [filterFn, setFilterFn] = useState({ fn: (items) => items });
   const [openPopup, setOpenPopup] = useState(false);
   const [recordForEdit, setRecordForEdit] = useState(null);
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
+  const [confirmDialog, setConfirmDialog] = useState({
+    isOpen: false,
+    title: "",
+    subTitle: "",
+  });
 
   const {
     TableContainer,
@@ -167,12 +177,37 @@ export default function Dashboard() {
     resetForm();
     setRecordForEdit(null);
     setOpenPopup(false);
-    setRecords(employees);
+    employees.push(employee);
+
+    setRecords(
+      employees.map((employee) => ({
+        ...employee,
+        department: departmentCollection[employee.departmentId - 1],
+      }))
+    );
+
+    setNotify({
+      isOpen: true,
+      message: "Submitted succesfull",
+      type: "success",
+    });
   };
 
   const openInPopup = (item) => {
     setRecordForEdit(item);
     setOpenPopup(true);
+  };
+
+  const onDelete = (item) => {
+    if (window.confirm("Are you sure")) {
+      employees = employees.filter((x) => x.id !== item.id);
+      setRecords(employees);
+      setNotify({
+        isOpen: true,
+        message: "Submitted succesfull",
+        type: "success",
+      });
+    }
   };
 
   return (
@@ -241,7 +276,10 @@ export default function Dashboard() {
                       onClick={() => openInPopup(item)}
                     />
                   </Controls.ActionButton>
-                  <Controls.ActionButton color="secondary">
+                  <Controls.ActionButton
+                    color="secondary"
+                    onClick={() => onDelete(item.id)}
+                  >
                     <CloseIcon fontSize="small" />
                   </Controls.ActionButton>
                 </TableCell>
@@ -258,6 +296,11 @@ export default function Dashboard() {
       >
         <EmployeeForm recordForEdit={recordForEdit} addOrEdit={addOrEdit} />
       </Popup>
+      <Notification notify={notify} setNotify={setNotify} />
+      <ConfirmDialog
+        confirmDialog={confirmDialog}
+        setConfirmDialog={setConfirmDialog}
+      />
     </>
   );
 }
