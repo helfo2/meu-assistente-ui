@@ -1,7 +1,7 @@
 import { Grid } from "@material-ui/core";
-import Controls from "components/controls/Controls";
-import { useForm, Form } from "components/useForm";
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import Controls from "../components/controls/Controls";
+import { useForm, Form } from "../components/useForm";
 
 const genderItems = [
   { id: "male", title: "Male" },
@@ -31,8 +31,10 @@ const initialValues = {
 export default function EmployeeForm(props) {
   const { recordForEdit, addOrEdit } = props;
 
-  const validate = (fieldValues = values) => {
-    let temp = { ...errors };
+  const [errors, setErrors] = useState({});
+
+  const validate = (fieldValues) => {
+    const temp = { ...errors };
 
     if ("fullName" in fieldValues)
       temp.fullName = fieldValues.fullName ? "" : "This field is required";
@@ -54,18 +56,16 @@ export default function EmployeeForm(props) {
       ...temp,
     });
 
-    if (fieldValues === values)
-      return Object.values(temp).every((x) => x === "");
+    // if (fieldValues === values)
+    return Object.values(temp).every((x) => x === "");
   };
 
-  const {
-    values,
-    setValues,
-    errors,
-    setErrors,
-    handleInputChange,
-    resetForm,
-  } = useForm(initialValues, true, validate);
+  const { values, setValues, handleInputChange, resetForm } = useForm(
+    initialValues,
+    true,
+    validate,
+    setErrors
+  );
 
   const handleSubmit = (e) => {
     e.preventDefault();

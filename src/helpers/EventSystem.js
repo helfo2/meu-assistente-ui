@@ -4,7 +4,7 @@ class EventSystem {
   }
 
   publish(event, data) {
-    let queue = this.queue[event];
+    const queue = this.queue[event];
 
     if (typeof queue === "undefined") {
       return false;
@@ -28,15 +28,13 @@ class EventSystem {
   //  the callback parameter is optional. Without it the whole event will be removed, instead of
   // just one subscibtion. Enough for simple implementations
   unsubscribe(event, callback) {
-    let queue = this.queue;
+    const { queue } = this;
 
     if (typeof queue[event] !== "undefined") {
       if (typeof callback === "undefined") {
         delete queue[event];
       } else {
-        this.queue[event] = queue[event].filter(function (sub) {
-          return sub !== callback;
-        });
+        this.queue[event] = queue[event].filter((sub) => sub !== callback);
       }
     }
   }

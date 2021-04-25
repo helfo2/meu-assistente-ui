@@ -1,5 +1,5 @@
-import { Container, Grid, makeStyles, Typography } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import { Grid, makeStyles, Typography } from "@material-ui/core";
+import React from "react";
 import logo from "./404.svg";
 
 const useStyles = makeStyles((theme) => ({

@@ -4,20 +4,21 @@ import {
   makeStyles,
   Toolbar,
   Typography,
+  Drawer,
+  IconButton,
+  useTheme,
 } from "@material-ui/core";
-import EventSystem from "helpers/EventSystem";
-import React, { useCallback } from "react";
-import { useState } from "react";
-import { useEffect } from "react";
-import UserControl from "./UserControl";
-import { Drawer, IconButton, useTheme } from "@material-ui/core";
-import authService from "services/auth-service";
+import React, { useCallback, useState, useEffect } from "react";
+
 import MenuIcon from "@material-ui/icons/Menu";
 import clsx from "clsx";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 
 import { useLocation } from "react-router";
+import { getCurrentUser } from "../../services/auth";
+import UserControl from "./UserControl";
+import EventSystem from "../../helpers/EventSystem";
 import MenuList from "./MenuList";
 
 const drawerWidth = 200;
@@ -124,7 +125,7 @@ export default function Header() {
       >
         <Toolbar>
           <Grid container alignItems="center">
-            {authService.getCurrentUser() ? (
+            {getCurrentUser() ? (
               <Grid item>
                 <IconButton
                   color="inherit"
@@ -153,14 +154,14 @@ export default function Header() {
                 Meu assistente
               </Typography>
             </Grid>
-            <Grid item sm></Grid>
+            <Grid item sm />
             <Grid item>
               <UserControl />
             </Grid>
           </Grid>
         </Toolbar>
       </AppBar>
-      {authService.getCurrentUser() ? (
+      {getCurrentUser() ? (
         <Drawer
           variant="permanent"
           className={clsx(classes.drawer, {

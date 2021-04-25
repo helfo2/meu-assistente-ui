@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -8,10 +8,9 @@ import VpnKeyIcon from "@material-ui/icons/VpnKey";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router";
-import { useState } from "react";
-import authService from "../services/auth-service";
-import Toast from "components/global/Toast";
 import { CircularProgress, List, ListItem } from "@material-ui/core";
+import { changePassword } from "../services/auth";
+import Toast from "../components/global/Toast";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -33,31 +32,29 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const passwordErrorInfo = () => {
-  return (
-    <div>
-      <Grid
-        style={{
-          display: "block !important",
-          position: "relative",
-          color: "red",
-          fontSize: "12px",
-        }}
-      >
-        <Typography component="h5">A senha deve conter:</Typography>
-        <List dense={true}>
-          <ListItem>6 ou mais caracteres</ListItem>
-          <ListItem>No mínimo um número</ListItem>
-          <ListItem>No mínimo uma letra maiúscula</ListItem>
-          <ListItem>No mínimo uma letra minúscula</ListItem>
-        </List>
-      </Grid>
-    </div>
-  );
-};
+const passwordErrorInfo = () => (
+  <div>
+    <Grid
+      style={{
+        display: "block !important",
+        position: "relative",
+        color: "red",
+        fontSize: "12px",
+      }}
+    >
+      <Typography component="h5">A senha deve conter:</Typography>
+      <List dense>
+        <ListItem>6 ou mais caracteres</ListItem>
+        <ListItem>No mínimo um número</ListItem>
+        <ListItem>No mínimo uma letra maiúscula</ListItem>
+        <ListItem>No mínimo uma letra minúscula</ListItem>
+      </List>
+    </Grid>
+  </div>
+);
 
 export default function ChangePassword() {
-  let history = useHistory();
+  const history = useHistory();
   const classes = useStyles();
 
   const [oldPassword, setOldPassword] = useState("");
@@ -134,7 +131,7 @@ export default function ChangePassword() {
     setMessage("");
     setLoading(true);
 
-    authService.changePassword(oldPassword, newPassword).then(
+    changePassword(oldPassword, newPassword).then(
       () => {
         setLoading(false);
         history.push({
@@ -236,13 +233,13 @@ export default function ChangePassword() {
                   style={{
                     marginRight: 20,
                   }}
-                ></CircularProgress>
+                />
               ) : (
                 <span>Mudar senha</span>
               )}
             </Button>
 
-            {message && <Toast isOpen={true} type="error" message={message} />}
+            {message && <Toast isOpen type="error" message={message} />}
           </form>
         </div>
       </Grid>

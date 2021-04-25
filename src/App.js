@@ -1,18 +1,20 @@
 import "./App.css";
 import React from "react";
-import MainContainer from "components/MainContainer";
 import { createMuiTheme, CssBaseline, ThemeProvider } from "@material-ui/core";
+import MainContainer from "./components/MainContainer";
 
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: "#05445E",
+      main: "#695e93",
+      light: "#ffffff",
+      dark: "#000000",
     },
     secondary: {
-      main: "#D8A7B1",
+      main: "#db1a42",
     },
     background: {
-      default: "#D4F1F4",
+      default: "#ffffff",
     },
   },
 });

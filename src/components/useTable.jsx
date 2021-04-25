@@ -7,14 +7,14 @@ import {
   TableRow,
   TableSortLabel,
 } from "@material-ui/core";
-import { useState } from "react";
+import React, { useState } from "react";
 
 const useStyles = makeStyles((theme) => ({
   table: {
     marginTop: theme.spacing(3),
     "& thead th": {
       fontWeight: "600",
-      color: theme.palette.primary.main,
+      color: theme.palette.primary.dark,
       backgroundColor: theme.palette.primary.light,
     },
     "& tbody td": {
@@ -46,42 +46,44 @@ export default function useTable(records, headCells, filterFn) {
   };
 
   const stableSort = (array, comparator) => {
-    const stabilizedThis = array.map((el, index) => [el, index]);
-    stabilizedThis.sort((a, b) => {
-      const order = comparator(a[0], b[0]);
-      if (order !== 0) return order;
-      return a[1] - b[1];
-    });
+    console.log("records: ", records);
+    if (array) {
+      const stabilizedThis =
+        array.length > 0 ? array.map((el, index) => [el, index]) : [];
+      stabilizedThis.sort((a, b) => {
+        const direction = comparator(a[0], b[0]);
+        if (direction !== 0) return direction;
+        return a[1] - b[1];
+      });
 
-    return stabilizedThis.map((el) => el[0]);
+      return stabilizedThis.map((el) => el[0]);
+    }
+
+    return [];
   };
 
-  const getComparator = (order, orderBy) => {
-    return order === "desc"
-      ? (a, b) => descendingComparator(a, b, orderBy)
-      : (a, b) => -descendingComparator(a, b, orderBy);
-  };
-
-  const descendingComparator = (a, b, orderBy) => {
-    if (b[orderBy] < a[orderBy]) return -1;
-
-    if (b[orderBy] > a[orderBy]) return 1;
-
+  const descendingComparator = (a, b, orderByProp) => {
+    if (b[orderByProp] < a[orderByProp]) return -1;
+    if (b[orderByProp] > a[orderByProp]) return 1;
     return 0;
   };
 
-  const recordsAfterPagingAndSorting = () => {
-    return stableSort(
-      filterFn.fn(records),
-      getComparator(order, orderBy)
-    ).slice(page * rowsPerPage, (page + 1) * rowsPerPage);
-  };
+  const getComparator = (fromOrder, orderByProp) =>
+    fromOrder === "desc"
+      ? (a, b) => descendingComparator(a, b, orderByProp)
+      : (a, b) => -descendingComparator(a, b, orderByProp);
 
-  const TableContainer = (props) => (
-    <Table className={classes.table}>{props.children}</Table>
+  const recordsAfterPagingAndSorting = () =>
+    stableSort(filterFn.fn(records), getComparator(order, orderBy)).slice(
+      page * rowsPerPage,
+      (page + 1) * rowsPerPage
+    );
+
+  const TableContainer = ({ children }) => (
+    <Table className={classes.table}>{children}</Table>
   );
 
-  const TableHeader = (props) => {
+  const TableHeader = () => {
     const handleSortRequest = (cellId) => {
       const isAsc = orderBy === cellId && order === "asc";
       setOrder(isAsc ? "desc" : "asc");
@@ -123,7 +125,7 @@ export default function useTable(records, headCells, filterFn) {
       rowsPerPageOptions={pages}
       onChangePage={handleChangePage}
       onChangeRowsPerPage={handleChangeRowsPerPage}
-    ></MuiTablePagination>
+    />
   );
 
   return {

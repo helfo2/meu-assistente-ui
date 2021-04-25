@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -8,12 +8,10 @@ import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
 import { useHistory } from "react-router";
-import { useState } from "react";
-import AuthService from "../services/auth-service";
-import Toast from "components/global/Toast";
 import { CircularProgress, List, ListItem } from "@material-ui/core";
+import { register } from "../services/auth";
+import Toast from "../components/global/Toast";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -35,31 +33,29 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const passwordErrorInfo = () => {
-  return (
-    <div>
-      <Grid
-        style={{
-          display: "block !important",
-          position: "relative",
-          color: "red",
-          fontSize: "12px",
-        }}
-      >
-        <Typography component="h5">A senha deve conter:</Typography>
-        <List dense={true}>
-          <ListItem>6 ou mais caracteres</ListItem>
-          <ListItem>No mínimo um número</ListItem>
-          <ListItem>No mínimo uma letra maiúscula</ListItem>
-          <ListItem>No mínimo uma letra minúscula</ListItem>
-        </List>
-      </Grid>
-    </div>
-  );
-};
+const passwordErrorInfo = () => (
+  <div>
+    <Grid
+      style={{
+        display: "block !important",
+        position: "relative",
+        color: "red",
+        fontSize: "12px",
+      }}
+    >
+      <Typography component="h5">A senha deve conter:</Typography>
+      <List dense>
+        <ListItem>6 ou mais caracteres</ListItem>
+        <ListItem>No mínimo um número</ListItem>
+        <ListItem>No mínimo uma letra maiúscula</ListItem>
+        <ListItem>No mínimo uma letra minúscula</ListItem>
+      </List>
+    </Grid>
+  </div>
+);
 
 export default function Register() {
-  let history = useHistory();
+  const history = useHistory();
   const classes = useStyles();
 
   const [email, setEmail] = useState("");
@@ -76,7 +72,7 @@ export default function Register() {
   const onChangeEmail = (e) => {
     const tempEmail = e.target.value;
 
-    var pattern = new RegExp(
+    const pattern = new RegExp(
       /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i
     );
 
@@ -149,7 +145,7 @@ export default function Register() {
     setMessage("");
     setLoading(true);
 
-    AuthService.register(firstName, email, password).then(
+    register(firstName, email, password).then(
       () => {
         setLoading(false);
         history.push({
@@ -267,13 +263,13 @@ export default function Register() {
                   style={{
                     marginRight: 20,
                   }}
-                ></CircularProgress>
+                />
               ) : (
                 <span>Cadastrar</span>
               )}
             </Button>
 
-            {message && <Toast isOpen={true} type="error" message={message} />}
+            {message && <Toast isOpen type="error" message={message} />}
 
             <Grid container justify="flex-end">
               <Grid item>

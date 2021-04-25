@@ -1,5 +1,5 @@
 import { makeStyles } from "@material-ui/core";
-import { useState } from "react";
+import React, { useState } from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -10,12 +10,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const useForm = (initialValues, validateOnChange = false, validate) => {
+export const useForm = (
+  initialValues,
+  validateOnChange = false,
+  validate,
+  setErrors
+) => {
   const [values, setValues] = useState(initialValues);
-  const [errors, setErrors] = useState({});
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+
     setValues({
       ...values,
       [name]: value,
@@ -31,16 +36,16 @@ export const useForm = (initialValues, validateOnChange = false, validate) => {
     setErrors({});
   };
 
-  return { values, setValues, errors, setErrors, handleInputChange, resetForm };
+  return { values, setValues, handleInputChange, resetForm };
 };
 
 export const Form = (props) => {
   const classes = useStyles();
 
-  const { children, ...rest } = props;
+  const { children } = props;
 
   return (
-    <form className={classes.root} autoComplete="off" {...rest}>
+    <form className={classes.root} autoComplete="off">
       {children}
     </form>
   );

@@ -1,3 +1,4 @@
+import React from "react";
 import DateFnsUtils from "@date-io/date-fns";
 import {
   KeyboardDatePicker,
@@ -7,10 +8,10 @@ import {
 export default function DatePicker(props) {
   const { name, label, value, onChange } = props;
 
-  const convertToDefaultEvent = (name, value) => ({
+  const convertToDefaultEvent = (_name, _value) => ({
     target: {
-      name,
-      value,
+      _name,
+      _value,
     },
   });
 
@@ -25,7 +26,7 @@ export default function DatePicker(props) {
         name={name}
         value={value}
         onChange={(date) => onChange(convertToDefaultEvent(name, date))}
-      ></KeyboardDatePicker>
+      />
     </MuiPickersUtilsProvider>
   );
 }

@@ -8,11 +8,16 @@ import {
   IconButton,
   Badge,
 } from "@material-ui/core";
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useHistory } from "react-router";
-import authService from "services/auth-service";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import ChatBubbleIcon from "@material-ui/icons/ChatBubble";
+
+import {
+  logout,
+  getCurrentUser,
+  getCurrentUserName,
+} from "../../services/auth";
 
 const useStyles = makeStyles((theme) => ({
   myAvatar: {
@@ -24,14 +29,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function UserControl() {
-  let history = useHistory();
+  const history = useHistory();
   const classes = useStyles();
   const toolbarRef = useRef();
 
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleLogout = () => {
-    authService.logout();
+    logout();
     setAnchorEl(null);
     history.push("/");
   };
@@ -51,7 +56,7 @@ export default function UserControl() {
 
   return (
     <>
-      {authService.getCurrentUser() ? (
+      {getCurrentUser() ? (
         <Grid container alignItems="center">
           <Grid item>
             <IconButton>
@@ -70,7 +75,7 @@ export default function UserControl() {
           <Grid item ref={toolbarRef}>
             <IconButton onClick={handleAvatarClick}>
               <Avatar className={classes.myAvatar}>
-                {authService.getCurrentUserName()}
+                {getCurrentUserName()}
               </Avatar>
             </IconButton>
           </Grid>

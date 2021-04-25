@@ -2,7 +2,6 @@ import {
   Avatar,
   Button,
   CircularProgress,
-  Container,
   CssBaseline,
   Grid,
   Link,
@@ -13,7 +12,7 @@ import {
 import React, { useState } from "react";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { useHistory, useLocation } from "react-router-dom";
-import AuthService from "../services/auth-service";
+import { login } from "../services/auth";
 import Toast from "../components/global/Toast";
 
 const useStyles = makeStyles((theme) => ({
@@ -37,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Login() {
-  let history = useHistory();
+  const history = useHistory();
   const classes = useStyles();
   const location = useLocation();
 
@@ -86,7 +85,7 @@ export default function Login() {
     setMessage("");
     setLoading(true);
 
-    AuthService.login(email, password).then(
+    login(email, password).then(
       () => {
         setLoading(false);
         history.push("/dashboard");
@@ -122,7 +121,7 @@ export default function Login() {
       <Grid item xs={3}>
         {location.state && location.state.fromRegister === true && (
           <Toast
-            isOpen={true}
+            isOpen
             type="success"
             message="Cadastro efetuado com sucesso! Por favor, faça login"
             duration={10000}
@@ -182,17 +181,17 @@ export default function Login() {
                 style={{
                   marginRight: 20,
                 }}
-              ></CircularProgress>
+              />
             ) : (
               <span>Entrar</span>
             )}
           </Button>
 
-          {message && <Toast isOpen={true} type="error" message={message} />}
+          {message && <Toast isOpen type="error" message={message} />}
 
           <Grid container>
             <Grid item xs>
-              <Link href="#" variant="body2">
+              <Link href="/forgot-password" variant="body2">
                 Esqueceu a senha?
               </Link>
             </Grid>

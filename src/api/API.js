@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 
 // axios.defaults.headers.common = {
 //   "Content-Type": "application/json"
@@ -20,11 +20,11 @@ import axios, { AxiosResponse } from "axios";
 //   }
 // }
 
-//axios.defaults.baseURL = 'https://meu-assistente.herokuapp.com/';
-//axios.defaults.baseURL = 'http://localhost:5555';
+console.log("REACT_APP_API_URL", process.env.REACT_APP_API_URL);
 
-const API = axios.create({
-  baseURL: "https://meu-assistente.herokuapp.com/",
+const api = axios.create({
+  baseURL:
+    process.env.REACT_APP_API_URL || "https://meu-assistente.herokuapp.com/",
   responseType: "json",
   headers: {
     "Content-Type": "application/json",
@@ -32,4 +32,4 @@ const API = axios.create({
   timeout: 5000,
 });
 
-export default API;
+export default api;

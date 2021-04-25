@@ -1,3 +1,4 @@
+import React from "react";
 import {
   FormControl,
   Checkbox as MuiCheckbox,
@@ -7,10 +8,10 @@ import {
 export default function Checkbox(props) {
   const { name, label, value, onChange } = props;
 
-  const convertToDefaultEvent = (name, value) => ({
+  const convertToDefaultEvent = (_name, _value) => ({
     target: {
-      name,
-      value,
+      _name,
+      _value,
     },
   });
 

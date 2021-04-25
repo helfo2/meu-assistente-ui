@@ -1,3 +1,4 @@
+import React from "react";
 import { Button, makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -5,16 +6,19 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 0,
     margin: theme.spacing(0.5),
   },
-  secondary: {
-    backgroundColor: theme.palette.secondary.light,
-    "& .MuiButton-label": {
-      color: theme.palette.secondary.main,
-    },
-  },
   primary: {
     backgroundColor: theme.palette.primary.light,
     "& .MuiButton-label": {
       color: theme.palette.primary.main,
+    },
+  },
+  secondary: {
+    backgroundColor: theme.palette.secondary.main,
+    "& .MuiButton-label": {
+      color: theme.palette.primary.light,
+    },
+    "& .MuiButton-label:hover": {
+      color: theme.palette.secondary.main,
     },
   },
 }));

@@ -1,3 +1,4 @@
+import React from "react";
 import {
   FormControl,
   FormHelperText,
@@ -17,7 +18,7 @@ export default function Select(props) {
         value={value}
         onChange={onChange}
         label={label}
-        {...(error && { error: true })}
+        error={error}
       >
         <MenuItem value="">None</MenuItem>
         {options.map((item) => (

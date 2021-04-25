@@ -12,10 +12,10 @@ import AdbIcon from "@material-ui/icons/Adb";
 import AddIcon from "@material-ui/icons/Add";
 import CloseIcon from "@material-ui/icons/Close";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
-import Notification from "components/Notification";
-import PageHeader from "components/PageHeader";
 import React, { useState } from "react";
-import { useLocation } from "react-router";
+// import { useLocation } from "react-router";
+import Notification from "../components/Notification";
+import PageHeader from "../components/PageHeader";
 import ConfirmDialog from "../components/ConfirmDialog";
 import Controls from "../components/controls/Controls";
 import Popup from "../components/Popup";
@@ -114,7 +114,7 @@ const headCells = [
 ];
 
 export default function Dashboard() {
-  const location = useLocation();
+  // const location = useLocation();
   const classes = useStyles();
 
   const departmentCollection = [
@@ -153,16 +153,15 @@ export default function Dashboard() {
   } = useTable(records, headCells, filterFn);
 
   const handleSearch = (e) => {
-    let target = e.target;
+    const { target } = e;
     setFilterFn({
       fn: (items) => {
         if (target.value === "") {
           return items;
-        } else {
-          return items.filter((x) =>
-            x.fullName.toLowerCase().includes(target.value.toLowerCase())
-          );
         }
+        return items.filter((x) =>
+          x.fullName.toLowerCase().includes(target.value.toLowerCase())
+        );
       },
     });
   };
@@ -180,9 +179,9 @@ export default function Dashboard() {
     employees.push(employee);
 
     setRecords(
-      employees.map((employee) => ({
-        ...employee,
-        department: departmentCollection[employee.departmentId - 1],
+      employees.map((_employee) => ({
+        ..._employee,
+        department: departmentCollection[_employee.departmentId - 1],
       }))
     );
 
@@ -198,16 +197,22 @@ export default function Dashboard() {
     setOpenPopup(true);
   };
 
-  const onDelete = (item) => {
-    if (window.confirm("Are you sure")) {
-      employees = employees.filter((x) => x.id !== item.id);
-      setRecords(employees);
-      setNotify({
-        isOpen: true,
-        message: "Submitted succesfull",
-        type: "success",
-      });
-    }
+  const onDelete = (id) => {
+    setConfirmDialog({ ...confirmDialog, isOpen: false });
+
+    employees = employees.filter((x) => x.id !== id);
+    setRecords(
+      employees.map((employee) => ({
+        ...employee,
+        department: departmentCollection[employee.departmentId - 1],
+      }))
+    );
+
+    setNotify({
+      isOpen: true,
+      message: "Delete succesfull",
+      type: "error",
+    });
   };
 
   return (
@@ -229,6 +234,7 @@ export default function Dashboard() {
 
     //   <h2>Dashboard</h2>
     // </Grid>
+
     <>
       <PageHeader
         title="Page Header Title"
@@ -278,7 +284,14 @@ export default function Dashboard() {
                   </Controls.ActionButton>
                   <Controls.ActionButton
                     color="secondary"
-                    onClick={() => onDelete(item.id)}
+                    onClick={() =>
+                      setConfirmDialog({
+                        isOpen: true,
+                        title: "Are you sure?",
+                        subTitle: "This operation can't be undone",
+                        onConfirm: () => onDelete(item.id),
+                      })
+                    }
                   >
                     <CloseIcon fontSize="small" />
                   </Controls.ActionButton>

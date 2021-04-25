@@ -1,145 +1,121 @@
 import {
-  Card,
-  Container,
+  InputAdornment,
   makeStyles,
-  Modal,
-  Table,
   TableBody,
-  TableCell,
-  TableHead,
   TableRow,
-  Typography,
+  Toolbar,
+  TableCell,
 } from "@material-ui/core";
-import { DataGrid } from "@material-ui/data-grid";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
+import LabelIcon from "@material-ui/icons/Label";
+import Paper from "@material-ui/core/Paper";
+// import Controls from "../components/controls/Controls";
+import { Search } from "@material-ui/icons";
+// import useTable from "../components/useTable";
 
-const columns = [
-  { field: "id", headerName: "ID", width: 70 },
-  { field: "firstName", headerName: "First name", width: 130 },
-  { field: "lastName", headerName: "Last name", width: 130 },
-  {
-    field: "age",
-    headerName: "Age",
-    type: "number",
-    width: 90,
-  },
-  {
-    field: "fullName",
-    headerName: "Full name",
-    description: "This column has a value getter and is not sortable.",
-    sortable: false,
-    width: 160,
-    valueGetter: (params) =>
-      `${params.getValue("firstName") || ""} ${
-        params.getValue("lastName") || ""
-      }`,
-  },
+import AddIcon from "@material-ui/icons/Add";
+import { getAllTags } from "../features/tag/service";
+import Controls from "../components/controls/Controls";
+import PageHeader from "../components/PageHeader";
+import useTable from "../components/useTable";
+
+const headCells = [
+  { id: "id", label: "ID" },
+  { id: "title", label: "Nome" },
+  { id: "color", label: "Cor" },
+  { id: "description", label: "Descrição" },
+  { id: "actions", label: "Ações", disableSorting: true },
 ];
 
-const rows = [
-  { id: 1, lastName: "Snow", firstName: "Jon", age: 35 },
-  { id: 2, lastName: "Lannister", firstName: "Cersei", age: 42 },
-  { id: 3, lastName: "Lannister", firstName: "Jaime", age: 45 },
-  { id: 4, lastName: "Stark", firstName: "Arya", age: 16 },
-  { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: null },
-  { id: 6, lastName: "Melisandre", firstName: null, age: 150 },
-  { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
-  { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
-  { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-];
-
-const useStyles = makeStyles({
-  root: {
-    marginTop: 100,
-    marginLeft: 100,
-    width: "90%",
+const useStyles = makeStyles((theme) => ({
+  pageContent: {
+    magin: theme.spacing(5),
+    padding: theme.spacing(3),
   },
-  paper: {
-    width: 450,
-    backgroundColor: "white",
-    padding: 4,
+  searchInput: {
+    width: "75%",
   },
-});
-
-function rand() {
-  return Math.round(Math.random() * 20) - 10;
-}
-
-function getModalStyle() {
-  const top = 50 + rand();
-  const left = 50 + rand();
-  return {
-    top: `${top}%`,
-    left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`,
-  };
-}
+  newButton: {
+    position: "absolute",
+    right: "10px",
+  },
+}));
 
 export default function Tags() {
   const classes = useStyles();
+  const allTags = getAllTags();
 
-  // return (
-  //   <Card className={classes.root}>
-  //     <Typography variant="h5">Etiquetas</Typography>
+  const [filterFn, setFilterFn] = useState({ fn: (items) => items });
+  const [tags, setTags] = useState([]);
 
-  //     <DataGrid rows={rows} columns={columns} pageSize={5} checkboxSelection />
+  useEffect(async () => {
+    setTags(await allTags);
+  }, []);
 
-  //     <Table size="small">
-  //       <TableHead>
-  //         <TableRow>
-  //           <TableCell>Etiquetas</TableCell>
-  //         </TableRow>
-  //       </TableHead>
-  //       <TableBody>
-  //         {["test1", "test2"].map((tag, index) => (
-  //           <TableRow key={index}>
-  //             <TableCell>{tag}</TableCell>
-  //           </TableRow>
-  //         ))}
-  //       </TableBody>
-  //     </Table>
-  //   </Card>
-  // );
-
-  const [modalStyle] = useState(getModalStyle);
-  const [selectedRow, setSelectedRow] = useState([]);
-  const [isModalOpen, setModalOpen] = useState(false);
-
-  const handleModalClose = () => {
-    setModalOpen(false);
+  const handleSearch = (e) => {
+    const { target } = e;
+    setFilterFn({
+      fn: (items) => {
+        if (target.value === "") {
+          return items;
+        }
+        return items.filter((x) =>
+          x.title.toLowerCase().includes(target.value.toLowerCase())
+        );
+      },
+    });
   };
 
-  const onSelectedRowChanged = (newSelectedRow) => {
-    if (newSelectedRow && newSelectedRow.selectionModel) {
-      console.log(newSelectedRow.selectionModel);
-
-      console.log(rows[newSelectedRow.selectionModel - 1]);
-
-      setSelectedRow(newSelectedRow.selectionModel);
-
-      setModalOpen(true);
-    }
-  };
+  const {
+    TableContainer,
+    TableHeader,
+    TablePagination,
+    recordsAfterPagingAndSorting,
+  } = useTable(tags, headCells, filterFn);
 
   return (
     <>
-      <Modal open={isModalOpen} onClose={handleModalClose}>
-        <div style={modalStyle} className={classes.paper}>
-          <h2 id="simple-modal-title">Text in a modal</h2>
-          <p id="simple-modal-description">
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </p>
-        </div>
-      </Modal>
-      <Container style={{ height: 400, marginTop: 100 }}>
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          pageSize={5}
-          onSelectionModelChange={onSelectedRowChanged}
-          selectionModel={selectedRow}
-        />
-      </Container>
+      <PageHeader
+        title="Etiquetas"
+        subtitle="Gerencie suas etiquetas e organize suas solicitações"
+        icon={<LabelIcon fontSize="large" />}
+      />
+      <Paper className={classes.pageContent}>
+        <Toolbar>
+          <Controls.Input
+            label="Buscar etiquetas"
+            className={classes.searchInput}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Search />
+                </InputAdornment>
+              ),
+            }}
+            onChange={handleSearch}
+          />
+          <Controls.Button
+            text="Nova etiqueta"
+            variant="outlined"
+            startIcon={<AddIcon />}
+            className={classes.newButton}
+          />
+        </Toolbar>
+        <TableContainer>
+          <TableHeader />
+          <TableBody>
+            {recordsAfterPagingAndSorting().map((item) => (
+              <TableRow key={item.id}>
+                <TableCell>{item.id}</TableCell>
+                <TableCell>{item.title}</TableCell>
+                <TableCell>{item.color}</TableCell>
+                <TableCell>{item.description}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </TableContainer>
+        <TablePagination />
+      </Paper>
     </>
   );
 }

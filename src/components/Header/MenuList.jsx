@@ -7,6 +7,7 @@ import NotificationImportantIcon from "@material-ui/icons/NotificationImportant"
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import GroupIcon from "@material-ui/icons/Group";
+import React from "react";
 
 import {
   Tooltip,
