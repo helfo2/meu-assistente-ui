@@ -125,6 +125,10 @@ export default function useTable(records, headCells, filterFn) {
       rowsPerPageOptions={pages}
       onChangePage={handleChangePage}
       onChangeRowsPerPage={handleChangeRowsPerPage}
+      labelRowsPerPage="Registros por página"
+      labelDisplayedRows={({ from, to, count }) =>
+        `Mostrando de ${from} até ${to} (Total: ${count})`
+      }
     />
   );
 

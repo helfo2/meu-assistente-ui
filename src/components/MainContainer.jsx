@@ -8,7 +8,7 @@ import Dashboard from "../pages/Dashboard";
 import NotFound from "../pages/PageNotFound";
 import { getCurrentUser } from "../services/auth";
 import ChangePassword from "../pages/ChangePassword";
-import Tags from "../pages/Tags";
+import Tags from "../pages/tags/Tags";
 
 function requireAuth(nextState, replace, next) {
   if (!getCurrentUser()) {

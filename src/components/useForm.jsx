@@ -42,10 +42,10 @@ export const useForm = (
 export const Form = (props) => {
   const classes = useStyles();
 
-  const { children } = props;
+  const { children, onSubmit } = props;
 
   return (
-    <form className={classes.root} autoComplete="off">
+    <form onSubmit={onSubmit} className={classes.root} autoComplete="off">
       {children}
     </form>
   );

@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Button(props) {
-  const { text, size, color, variant, onClick } = props;
+  const { text, size, color, variant, startIcon, onClick, type } = props;
   const classes = useStyles();
 
   return (
@@ -20,6 +20,8 @@ export default function Button(props) {
       size={size || "large"}
       color={color || "primary"}
       onClick={onClick}
+      startIcon={startIcon}
+      type={type}
       classes={{ root: classes.root, label: classes.label }}
     >
       {text}

@@ -6,12 +6,13 @@ import MainContainer from "./components/MainContainer";
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: "#695e93",
+      main: "#6452a8",
       light: "#ffffff",
-      dark: "#000000",
+      dark: "#9d8dd9",
     },
     secondary: {
       main: "#db1a42",
+      light: "#757575",
     },
     background: {
       default: "#ffffff",

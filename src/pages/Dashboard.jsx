@@ -20,7 +20,7 @@ import ConfirmDialog from "../components/ConfirmDialog";
 import Controls from "../components/controls/Controls";
 import Popup from "../components/Popup";
 import useTable from "../components/useTable";
-import EmployeeForm from "./EmployeeForm";
+import EmployeeForm from "../forms/EmployeeForm";
 
 let employees = [
   {

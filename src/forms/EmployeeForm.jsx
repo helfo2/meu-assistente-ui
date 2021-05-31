@@ -32,6 +32,7 @@ export default function EmployeeForm(props) {
   const { recordForEdit, addOrEdit } = props;
 
   const [errors, setErrors] = useState({});
+  const validateOnChange = true;
 
   const validate = (fieldValues) => {
     const temp = { ...errors };
@@ -62,7 +63,7 @@ export default function EmployeeForm(props) {
 
   const { values, setValues, handleInputChange, resetForm } = useForm(
     initialValues,
-    true,
+    validateOnChange,
     validate,
     setErrors
   );

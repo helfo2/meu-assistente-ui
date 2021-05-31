@@ -3,6 +3,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Divider,
   IconButton,
   makeStyles,
   Typography,
@@ -24,17 +25,24 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
   },
   dialogAction: {
-    justifyContent: "center",
+    justifyContent: "flex-end",
+  },
+  contentTitle: {
+    marginBottom: theme.spacing(2),
+  },
+  divider: {
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
   },
   titleIcon: {
-    backgroundColor: theme.palette.secondary.light,
-    color: theme.palette.secondary.main,
+    backgroundColor: theme.palette.primary.light,
+    color: theme.palette.primary.main,
     "&:hover": {
       backgroundColor: theme.palette.secondary.light,
       cursor: "default",
     },
     "& .MuiSvgIcon-root": {
-      fontSize: "8rem",
+      fontSize: "4rem",
     },
   },
 }));
@@ -51,17 +59,21 @@ export default function ConfirmDialog(props) {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.dialogContent}>
-        <Typography variant="h6">{confirmDialog.title}</Typography>
+        <Typography variant="h5" className={classes.contentTitle}>
+          {confirmDialog.title}
+        </Typography>
         <Typography variant="h6">{confirmDialog.subTitle}</Typography>
+        <Typography variant="subtitle1">{confirmDialog.text}</Typography>
       </DialogContent>
+      <Divider className={classes.divider} />
       <DialogActions className={classes.dialogAction}>
         <Controls.Button
-          text="No"
+          text="Cancelar"
           color="default"
           onClick={() => setConfirmDialog({ ...confirmDialog, isOpen: false })}
         />
         <Controls.Button
-          text="Yes"
+          text="Confirmar"
           color="primary"
           onClick={confirmDialog.onConfirm}
         />

@@ -1,7 +1,7 @@
 import jwtDecode from "jwt-decode";
 
 import EventSystem from "../helpers/EventSystem";
-import api from "../api/API";
+import api from "../api/api";
 
 const BASE_ADDR = "auth";
 

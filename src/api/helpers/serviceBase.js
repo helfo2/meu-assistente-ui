@@ -1,5 +1,5 @@
-import api from "../API";
-import getAuthToken from "./useAccessTokenInHeader";
+import api from "../api";
+import getAuthToken from "./getAuthToken";
 
 export const getAll = async (entityType) => {
   try {
@@ -27,13 +27,9 @@ export const get = async (entityType, entityId) => {
 
 export const create = async (entityType, entity) => {
   try {
-    const res = await api.post(
-      `/${entityType}`,
-      {
-        headers: getAuthToken(),
-      },
-      entity
-    );
+    const res = await api.post(`/${entityType}`, entity, {
+      headers: getAuthToken(),
+    });
     return res.data;
   } catch (ex) {
     console.log(ex);
@@ -43,13 +39,9 @@ export const create = async (entityType, entity) => {
 
 export const update = async (entityType, entity) => {
   try {
-    const res = await api.put(
-      `/${entityType}/${entity.id}`,
-      {
-        headers: getAuthToken(),
-      },
-      entity
-    );
+    const res = await api.put(`/${entityType}`, entity, {
+      headers: getAuthToken(),
+    });
     return res.data;
   } catch (ex) {
     console.log(ex);
@@ -59,9 +51,9 @@ export const update = async (entityType, entity) => {
 
 export const remove = async (entityType, entityId) => {
   try {
-    const res = await api.remove(`/${entityType}/${entityId}, {
-      headers: useAccessTokenInHeader(),
-    }`);
+    const res = await api.delete(`/${entityType}/${entityId}`, {
+      headers: getAuthToken(),
+    });
     return res.data;
   } catch (ex) {
     console.log(ex);

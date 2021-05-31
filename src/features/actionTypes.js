@@ -1,0 +1,6 @@
+export default {
+  CREATE_TAG: "CREATE_TAG",
+  UPDATE_TAG: "UPDATE_TAG",
+  DELETE_TAG: "DELETE_TAG",
+  LOAD_TAGS: "LOAD_TAGS",
+};
